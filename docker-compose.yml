@@ -1,0 +1,23 @@
+version: '3.4'
+services:
+    elk_alert:
+        container_name: elastalert
+        image: bitsensor/elastalert:latest
+        build:
+            context: ./
+            dockerfile: Dockerfile
+        environment:
+            TZ: "Europe/Moscow"
+        ports:
+          - 3030:3030
+        restart:
+            - always
+        working_dir: /home/elastalert
+        volumes:
+            - config/elastalert.yaml:/opt/elastalert/config.yaml
+            - config/elastalert-test.yaml:/opt/elastalert/config-test.yaml
+            - config/config.json:/opt/elastalert-server/config/config.json
+            - rules:/opt/elastalert/rules
+            - rule_templates:/opt/elastalert/rule_templates
+        networks:
+        - elk
